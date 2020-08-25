@@ -63,8 +63,8 @@ def seir_model_with_soc_dist(init_vals, params, t):
     alpha, beta, gamma, rho = params
     dt = t[1] - t[0]
     for _ in t[1:]:
-        next_S = S[-1] - (rho*beta*S[-1]*I[-1])*dt
-        next_E = E[-1] + (rho*beta*S[-1]*I[-1] - alpha*E[-1])*dt
+        next_S = S[-1] - (rho*beta*S[-1]*I[-1] + beta * S[-1] * E[-1])*dt # added -beta*S[-1]*E[-1]
+        next_E = E[-1] + (rho*beta*S[-1]*I[-1] - alpha*E[-1] + beta*S[-1]*E[-1])*dt #added + beta*S[-1]*E[-1]
         next_I = I[-1] + (alpha*E[-1] - gamma*I[-1])*dt
         next_R = R[-1] + (gamma*I[-1])*dt
         S.append(next_S)
@@ -75,7 +75,7 @@ def seir_model_with_soc_dist(init_vals, params, t):
 
 #Rho = 0 indicates everyone is locked down and quarantined while 1 is equivalent to our base case above.
 
-rho = 0.8
+rho = 0
 
 params = alpha, beta, gamma, rho
 
@@ -102,4 +102,18 @@ legend.get_frame().set_alpha(0.5)
 for spine in ('top', 'right', 'bottom', 'left'):
     ax.spines[spine].set_visible(False)
 plt.title("SEIR with social distancing")
+plt.show()
+
+
+#Rho from 0 to 1
+rho_list = [0,0.2,0.4,0.6,0.8,1]
+legends = ['0','0.2','0.4','0.6','0.8','1']
+plt.figure()
+for rho in rho_list:
+    params = alpha, beta, gamma, rho
+    sd_results = seir_model_with_soc_dist(init_vals, params, t)
+    E = sd_results[:,1]
+    plt.plot(E)
+
+plt.legend(legends)
 plt.show()
