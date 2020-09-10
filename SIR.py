@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 
+
 class SIR():
 
     def __init__(self,y,t,N,beta,gamma):
@@ -14,6 +15,7 @@ class SIR():
 
     def intSIR(self):
         return odeint(deriv,self.y, self.t, args=(self.N, self.beta, self.gamma)).T
+
 
     def plot_normalized_curves(self):
         S,I,R = self.intSIR()
@@ -33,6 +35,7 @@ class SIR():
         legend.get_frame().set_alpha(0.5)
         for spine in ('top', 'right', 'bottom', 'left'):
             ax.spines[spine].set_visible(False)
+        plt.title("SIR Model - Normalized")
         plt.show()
 
     def plot_individual_curves(self):
@@ -42,6 +45,7 @@ class SIR():
         plt.xlabel("dates")
         plt.ylabel("count")
         plt.legend()
+        plt.title("SIR Model - Susceptible")
         plt.show()
 
         plt.figure()
@@ -49,19 +53,22 @@ class SIR():
         plt.xlabel("dates")
         plt.ylabel("count")
         plt.legend()
+        plt.title("SIR Model - Infected")
         plt.show()
 
         plt.figure()
-        plt.plot(self.t,R, 'g', alpha=0.5, lw=2, label='Recovered with immunity')
+        plt.plot(self.t,R, 'g', alpha=0.5, lw=2, label='Recovered/Removed')
         plt.xlabel("dates")
         plt.ylabel("count")
         plt.legend()
+        plt.title("SIR Model - Recovered")
         plt.show()
 
-def deriv(y,t,N,beta,gamma):
-    S,I,R = y
-    dSdt = - beta * S * I/N
-    dIdt = beta * S * I/N - gamma * I
+
+def deriv(y, t, N, beta, gamma):
+    S, I, R = y
+    dSdt = -beta * S * I / N
+    dIdt = beta * S * I / N - gamma * I
     dRdt = gamma * I
-    return dSdt,dIdt,dRdt
+    return dSdt, dIdt, dRdt
 
