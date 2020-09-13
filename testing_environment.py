@@ -16,13 +16,25 @@ def SIR(y, t, N, beta, gamma):
     dRdt = gamma * I
     return dSdt, dIdt, dRdt
 
+# def SEIR(y, t, N, alpha,beta, gamma,rho):
+#     S, E,I, R = y
+#     dSdt = -beta * S * E - rho * beta * S * I
+#     dEdt = rho * beta * S * I + beta * S * E - alpha * E
+#     dIdt = alpha * E - gamma * I
+#     dRdt = gamma * I
+#     return dSdt, dEdt,dIdt, dRdt
+
+
+#old version
 def SEIR(y, t, N, alpha,beta, gamma,rho):
     S, E,I, R = y
-    dSdt = -beta * S * E - rho * beta * S * I
-    dEdt = rho * beta * S * I + beta * S * E - alpha * E
+    dSdt = - rho * beta * S * I
+    dEdt = rho * beta * S * I - alpha * E
     dIdt = alpha * E - gamma * I
     dRdt = gamma * I
     return dSdt, dEdt,dIdt, dRdt
+
+
 
 #Compute Mean-Squared Error for SIR
 def SIR_MSE( point, susceptible, infected, recovered, s_0, i_0, r_0):
@@ -61,28 +73,25 @@ def SEIR_MSE(point, susceptible,infected, recovered, s_0, e_0,i_0, r_0):
 def plot_individual_curves(S, I, R, t):
     plt.figure()
     plt.plot(t, S, 'b', alpha=0.5, lw=2, label='Susceptible')
-    plt.xlabel("Days")
-    plt.ylabel("Count")
+    plt.xlabel("Time (days)")
+    plt.ylabel("Number of cases")
     plt.legend()
-    plt.title("SIR Model - Susceptible")
     plt.show()
     plt.savefig("SIR Model - Susceptible.png")
 
     plt.figure()
     plt.plot(t, I, 'r', alpha=0.5, lw=2, label='Infected')
-    plt.xlabel("Days")
-    plt.ylabel("Count")
+    plt.xlabel("Time (days)")
+    plt.ylabel("Number of cases")
     plt.legend()
-    plt.title("SIR Model - Infected")
     plt.show()
     plt.savefig("SIR Model - Infected.png")
 
     plt.figure()
     plt.plot(t, R, 'g', alpha=0.5, lw=2, label='Recovered/Removed')
-    plt.xlabel("Days")
-    plt.ylabel("Count")
+    plt.xlabel("Time (days)")
+    plt.ylabel("Number of cases")
     plt.legend()
-    plt.title("SIR Model - Recovered")
     plt.show()
     plt.savefig("SIR Model - Recovered.png")
 
@@ -135,7 +144,7 @@ for i in ratio:
 
 plt.figure()
 plt.plot(ratio, uf)
-plt.title("Phase Transition at gamma/beta = 1")
+#plt.title("Phase Transition at gamma/beta = 1")
 plt.xlabel("gamma/beta")
 plt.show()
 
@@ -195,10 +204,10 @@ for rho_i in rho_list:
     solution = odeint(SEIR, y0, t, args=(N, alpha, beta, gamma, rho))
     S, E, I, R = solution.T
     plt.plot(S)
-plt.title("Effects of social distancing - Susceptible")
+#plt.title("Effects of social distancing - Susceptible")
 plt.legend(["Rho = " + x for x in legends])
-plt.xlabel("Days")
-plt.ylabel("Count")
+plt.xlabel("Time (days)")
+plt.ylabel("Number of cases")
 plt.savefig('Effects of social distancing - Susceptible.png')
 plt.show()
 
@@ -209,9 +218,9 @@ for rho in rho_list:
     solution = odeint(SEIR, y0, t, args=(N, alpha, beta, gamma, rho))
     S, E, I, R = solution.T
     plt.plot(E)
-plt.xlabel("Days")
-plt.ylabel("Count")
-plt.title("Effects of social distancing - Exposed")
+plt.xlabel("Time (days)")
+plt.ylabel("Number of cases")
+#plt.title("Effects of social distancing - Exposed")
 plt.legend(["Rho = " + x for x in legends])
 plt.savefig('Effects of social distancing - Exposed.png')
 plt.show()
@@ -223,9 +232,9 @@ for rho in rho_list:
     solution = odeint(SEIR, y0, t, args=(N, alpha, beta, gamma, rho))
     S, E, I, R = solution.T
     plt.plot(I)
-plt.xlabel("Days")
-plt.ylabel("Count")
-plt.title("Effects of social distancing - Infected")
+plt.xlabel("Time (days)")
+plt.ylabel("Number of cases")
+#plt.title("Effects of social distancing - Infected")
 plt.legend(["Rho = " + x for x in legends])
 plt.savefig('Effects of social distancing - Infected.png')
 plt.show()
@@ -237,9 +246,9 @@ for rho in rho_list:
     solution = odeint(SEIR, y0, t, args=(N, alpha, beta, gamma, rho))
     S, E, I, R = solution.T
     plt.plot(R)
-plt.xlabel("Days")
-plt.ylabel("Count")
-plt.title("Effects of social distancing - Recovered")
+plt.xlabel("Time (days)")
+plt.ylabel("Number of cases")
+#plt.title("Effects of social distancing - Recovered")
 plt.legend(["Rho = " + x for x in legends])
 plt.savefig('Effects of social distancing - Recovered.png')
 plt.show()
