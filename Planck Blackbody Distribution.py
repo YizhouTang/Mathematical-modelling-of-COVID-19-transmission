@@ -44,8 +44,6 @@ def MSE(C,T,y_true):
 
     return np.mean((y_hat - y_true)**2)
 
-
-
 T = list(range(1, len(confirmed) + 1))
 y_true = np.array(confirmed)
 initial_guess = [0.1,0.1]
@@ -53,13 +51,17 @@ res = minimize(MSE,initial_guess ,method = 'Nelder-Mead', args=(T,y_true))
 
 print(res)
 C = res.x
+y_pred = BlackBodyDistribution_squared(C[0],C[1],T)
+print("MSE")
+print(np.mean((y_pred - y_true)**2))
 
 T = list(range(1,1000))
 y_pred = BlackBodyDistribution_squared(C[0],C[1],T)
 plt.figure()
 plt.plot(T,y_pred)
+plt.plot(y_true)
 #plt.plot(T,y_true)
-plt.legend(['y_pred'])#,'y_true'])
+plt.legend(['Infected Cases - Predicted','Infected Cases - True '])
 plt.xlabel("Time (days)")
 plt.ylabel("Number of caess")
 plt.tight_layout()
@@ -104,13 +106,17 @@ res = minimize(MSE_cube,initial_guess ,method = 'Nelder-Mead', args=(T,y_true))
 
 print(res)
 C = res.x
+y_pred = BlackBodyDistribution_cube(C[0],C[1],T)
+print("MSE")
+print(np.mean((y_pred - y_true)**2))
 
 T = list(range(1,1000))
 y_pred = BlackBodyDistribution_cube(C[0],C[1],T)
 plt.figure()
 plt.plot(T,y_pred)
+plt.plot(y_true)
 #plt.plot(T,y_true)
-plt.legend(['y_pred'])#,'y_true'])
+plt.legend(['Infected Cases - Predicted','Infected Cases - True '])
 plt.xlabel("Time (days)")
 plt.ylabel("Number of cases")
 #plt.title("Infection Modeling - Planck Blackbody Distribution (t^3)")
